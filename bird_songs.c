@@ -1,3 +1,9 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <assert.h>
+#include "rthread.h"
+
 #define WHISTLER 0 // multiple applications may play sounds 
 #define LISTENER 1 // multiple applications may record
 
@@ -9,7 +15,7 @@ struct device {
 
     // Variables to keep track of the state.
 
-    int nwWistlersEntered, nWhistlersWaiting;
+    int nWhistlersEntered, nWhistlersWaiting;
     int nListenersEntered, nListenersWaiting;
 };
 
