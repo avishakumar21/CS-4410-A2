@@ -29,18 +29,23 @@ void gi_alloc(struct gpu_info *gi, unsigned int ngpus, /* OUT */ unsigned int gp
 	for (unsigned int i = 0; i < ngpus; i++) {
 		rthread_sema_procure(&gi->sema);
 	}
+	rthread_sema_vacate(&gi->mutex_procure);
+
+	rthread_sema_procure(&gi->mutex_track);
 	assert(ngpus <= gi->nfree);
 	gi->nfree -= ngpus;
 	unsigned int g = 0;
 
 	for (unsigned int i = 0; i < ngpus; i++) {
-		rthread_sema_procure(&gi->mutex_track); //does this go here 
 		assert(i < NGPUS);
 		if (!gi->allocated[i]) {
 			gi->allocated[i] = 1;
 			gpus[g++] = i;
 		}
 	}
+	rthread_sema_vacate(&gi->mutex_track);
+
+
 
 }
 
@@ -48,6 +53,8 @@ void gi_release(struct gpu_info *gi, unsigned int ngpus, /* IN */ unsigned int g
 	for (unsigned int g = 0; g < ngpus; g++) {
 		rthread_sema_vacate(&gi->sema);
 	}
+
+	rthread_sema_procure(&gi->mutex_track); 
 
 	for (unsigned int g = 0; g < ngpus; g++) {
 		assert(gpus[g] < NGPUS);
@@ -57,7 +64,7 @@ void gi_release(struct gpu_info *gi, unsigned int ngpus, /* IN */ unsigned int g
 	gi->nfree += ngpus;
 	assert(gi->nfree <= NGPUS);
 
-	rthread_sema_vacate(&gi->mutex_procure);
+	rthread_sema_vacate(&gi->mutex_track); 
 
 }
 
