@@ -21,7 +21,7 @@ void gi_init(struct gpu_info *gi){
 	memset(gi->allocated, 0, sizeof(gi->allocated));
 	gi->nfree = NGPUS;
 	rthread_sema_init(&gi->mutex_procure, 0);
-	rthread_sema_init(&gi->mutex_track, 0);
+	rthread_sema_init(&gi->mutex_track, 1);
 	rthread_sema_init(&gi->sema, 0);
 	rthread_sema_init(&gi->overallocation_sema, 0);
 }
