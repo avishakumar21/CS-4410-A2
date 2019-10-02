@@ -20,7 +20,7 @@ void gi_init(struct gpu_info *gi){
 	gi->nfree = NGPUS;
 	rthread_sema_init(&gi->mutex_procure, 1);
 	rthread_sema_init(&gi->mutex_track, 1);
-	rthread_sema_init(&gi->lock, 0);
+	rthread_sema_init(&gi->sema, 0);
 }
 
 void gi_alloc(struct gpu_info *gi, unsigned int ngpus, /* OUT */ unsigned int gpus[]){
@@ -34,7 +34,7 @@ void gi_alloc(struct gpu_info *gi, unsigned int ngpus, /* OUT */ unsigned int gp
 	unsigned int g = 0;
 
 	for (unsigned int i = 0; i < ngpus; i++) {
-		rthread_sema_procure(&gi->mutex_state); //does this go here 
+		rthread_sema_procure(&gi->mutex_track); //does this go here 
 		assert(i < NGPUS);
 		if (!gi->allocated[i]) {
 			gi->allocated[i] = 1;
