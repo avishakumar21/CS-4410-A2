@@ -5,6 +5,9 @@
 #include "rthread.h"
 
 #define NGPUS 10
+
+rthread_lock_t print_lock;
+// YOUR CODE GOES HERE
 struct gpu_info {
 	int allocated[NGPUS];
 	unsigned int nfree;
@@ -24,6 +27,9 @@ void gi_init(struct gpu_info *gi){
 }
 
 void gi_alloc(struct gpu_info *gi, unsigned int ngpus, /* OUT */ unsigned int gpus[]){
+	if (ngpus > 10){
+		//cause wait forever without having a busy wait 
+	}
 	rthread_sema_procure(&gi->mutex_procure);
 
 	for (unsigned int i = 0; i < ngpus; i++) {
@@ -72,13 +78,6 @@ void gi_free(struct gpu_info *gi){
 }
 
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "rthread.h"
-
-#define NGPUS 10
-rthread_lock_t print_lock;
-// YOUR CODE GOES HERE
 void gpu_user(void *shared, void *arg) {
 	struct gpu_info *gi = shared;
 	unsigned int gpus[NGPUS];
