@@ -61,7 +61,7 @@ void dev_enter(struct device *dev, int which)
 	
 	if (which == 0) // whistler - corresponds to reader
 	{
-		assert(dev->nListenersEntered == 0 || (dev->nListenersEntered == 1 && dev->nWhistlersEntered == 0));
+		assert(dev->nListenersEntered == 0 || (dev->nListenersEntered > 0 && dev->nWhistlersEntered == 0));
 
     	if (dev->nListenersEntered > 0) 
     	{
@@ -77,7 +77,7 @@ void dev_enter(struct device *dev, int which)
 	}
 	else if (which == 1) // listening
 	{
-		assert(dev->nWhistlersEntered == 0 || (dev->nWhistlersEntered == 1 && dev->nListenersEntered == 0));
+		assert(dev->nWhistlersEntered == 0 || (dev->nWhistlersEntered > 0 && dev->nListenersEntered == 0));
 
     	if (dev->nWhistlersEntered > 0) 
     	{
