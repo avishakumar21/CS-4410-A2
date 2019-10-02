@@ -3,9 +3,11 @@
 #include <string.h>
 #include <assert.h>
 #include "rthread.h"
+
 #define NWHISTLERS 3
 #define NLISTENERS 3
 #define NEXPERIMENTS 2
+
 char *whistlers[NWHISTLERS] = { "w1", "w2", "w3" };
 char *listeners[NLISTENERS] = { "l1", "l2", "l3" };
 void worker(void *shared, void *arg){

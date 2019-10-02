@@ -1,3 +1,9 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <assert.h>
+#include "rthread.h"
+
 #define NGPUS 10
 struct gpu_info {
 	int allocated[NGPUS];
