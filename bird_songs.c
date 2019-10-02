@@ -133,11 +133,11 @@ void worker(void *shared, void *arg){
 	char *name = arg;
 	for (int i = 0; i < NEXPERIMENTS; i++) {
 		printf("worker %s waiting for device\n", name);
-		dev_enter(dev, name[0] == ’w’);
+		dev_enter(dev, name[0] == 'w');
 		printf("worker %s has device\n", name);
 		rthread_delay(random() % 3000);
 		printf("worker %s releases device\n", name);
-		dev_exit(dev, name[0] == ’w’);
+		dev_exit(dev, name[0] == 'w');
 		rthread_delay(random() % 3000);
 	}
 	printf("worker %s is done\n", name);
