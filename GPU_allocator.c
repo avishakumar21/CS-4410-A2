@@ -13,9 +13,7 @@ struct gpu_info {
 	unsigned int nfree;
     rthread_sema_t mutex_procure;  
     rthread_sema_t mutex_track; //to keep track of the state
-    //if there is gpu is equal to 20, block
-    //need another mutex for 20 gpus
-    //rthread_sema_t overallocation_sema;
+    rthread_sema_t overallocation_sema;
 	rthread_sema_t sema;
 };
 
@@ -25,15 +23,15 @@ void gi_init(struct gpu_info *gi){
 	rthread_sema_init(&gi->mutex_procure, 1);
 	rthread_sema_init(&gi->mutex_track, 1);
 	rthread_sema_init(&gi->sema, 0);
-	//rthread_sema_init(&gi->overallocation_sema, 0);
+	rthread_sema_init(&gi->overallocation_sema, 0);
 }
 
 void gi_alloc(struct gpu_info *gi, unsigned int ngpus, /* OUT */ unsigned int gpus[]){
-	//if (ngpus > 10){
-		//cause wait forever without having a busy wait 
-		//rthread_sema_procure(&gi->overallocation_sema);
+	// if (ngpus > 20){
+	// 	//cause wait forever without having a busy wait 
+	// 	rthread_sema_procure(&gi->overallocation_sema); //block forever, do not have a vacate 
+	// }
 
-	//}
 	rthread_sema_procure(&gi->mutex_procure);
 
 	for (unsigned int i = 0; i < ngpus; i++) {
