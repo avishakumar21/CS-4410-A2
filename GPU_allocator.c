@@ -22,12 +22,12 @@ void gi_init(struct gpu_info *gi){
 	gi->nfree = NGPUS;
 	rthread_sema_init(&gi->mutex_procure, 1);
 	rthread_sema_init(&gi->mutex_track, 1);
-	rthread_sema_init(&gi->sema, 10);
-	rthread_sema_init(&gi->overallocation_sema, 20);
+	rthread_sema_init(&gi->sema, NGPUS);
+	rthread_sema_init(&gi->overallocation_sema, 0);
 }
 
 void gi_alloc(struct gpu_info *gi, unsigned int ngpus, /* OUT */ unsigned int gpus[]){
-	if (ngpus > 20){
+	if (ngpus > NGPUS){
 		//cause wait forever without having a busy wait 
 		rthread_sema_procure(&gi->overallocation_sema); //block forever, do not have a vacate 
 	}
