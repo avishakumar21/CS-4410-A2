@@ -40,11 +40,11 @@ void gi_alloc(struct gpu_info *gi, unsigned int ngpus, /* OUT */ unsigned int gp
 	rthread_sema_vacate(&gi->mutex_procure);
 
 	rthread_sema_procure(&gi->mutex_track);
-	assert(ngpus <= gi->nfree);  //failing 
+	assert(ngpus <= gi->nfree); 
 	gi->nfree -= ngpus;
 	unsigned int g = 0;
 
-	for (unsigned int i = 0; i < ngpus; i++) {
+	for (unsigned int i = 0; g < ngpus; i++) {
 		assert(i < NGPUS);
 		if (!gi->allocated[i]) {
 			gi->allocated[i] = 1;
