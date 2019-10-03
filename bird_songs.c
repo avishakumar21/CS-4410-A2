@@ -13,7 +13,7 @@ struct device {
     rthread_sema_t whistlerSema;
     rthread_sema_t listenerSema;
 
-    // Variables to keep track of the state.
+    // Variables to keep track of the state
 
     int nWhistlersEntered, nWhistlersWaiting;
     int nListenersEntered, nListenersWaiting;
@@ -84,7 +84,7 @@ void dev_enter(struct device *dev, int which){
 	    dev_vacateOne(dev);
 	}
 	else{
-		// throw error that which is not a valid parameter 
+		// print error that which is not a valid parameter 
 		printf("which is not a valid number (0 or 1), which is %d\n", which);
 	}
 }
@@ -105,7 +105,7 @@ void dev_exit(struct device *dev, int which){
 	    dev_vacateOne(dev);
 	}
 	else{
-		//throw error that which is not a valid parameter 
+		//print error that which is not a valid parameter 
 		printf("which is not a valid number (0 or 1), which is %d\n", which);
 	}
 }

@@ -27,13 +27,14 @@ void gi_init(struct gpu_info *gi){
 }
 
 void gi_alloc(struct gpu_info *gi, unsigned int ngpus, /* OUT */ unsigned int gpus[]){
+	
 	if (ngpus > NGPUS){
 		//cause wait forever without having a busy wait 
-		rthread_sema_procure(&gi->overallocation_sema); //block forever, do not have a vacate 
+		rthread_sema_procure(&gi->overallocation_sema); 
+		//block forever, don't need to have a vacate for this instance because produre never happens
 	}
 
 	rthread_sema_procure(&gi->mutex_procure);
-
 	for (unsigned int i = 0; i < ngpus; i++) {
 		rthread_sema_procure(&gi->sema);
 	}
@@ -43,7 +44,6 @@ void gi_alloc(struct gpu_info *gi, unsigned int ngpus, /* OUT */ unsigned int gp
 	assert(ngpus <= gi->nfree); 
 	gi->nfree -= ngpus;
 	unsigned int g = 0;
-
 	for (unsigned int i = 0; g < ngpus; i++) {
 		assert(i < NGPUS);
 		if (!gi->allocated[i]) {
@@ -61,7 +61,6 @@ void gi_release(struct gpu_info *gi, unsigned int ngpus, /* IN */ unsigned int g
 	}
 
 	rthread_sema_procure(&gi->mutex_track); 
-
 	for (unsigned int g = 0; g < ngpus; g++) {
 		assert(gpus[g] < NGPUS);
 		assert(gi->allocated[gpus[g]]); //failing 
@@ -69,7 +68,6 @@ void gi_release(struct gpu_info *gi, unsigned int ngpus, /* IN */ unsigned int g
 	}
 	gi->nfree += ngpus;
 	assert(gi->nfree <= NGPUS);
-
 	rthread_sema_vacate(&gi->mutex_track); 
 }
 
